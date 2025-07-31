@@ -30,11 +30,11 @@ android {
         // minSdk = flutter.minSdkVersion
         minSdk = 22
         targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
+        versionCode = flutter.versionCode()
 
         multiDexEnabled = true
 
-        versionName = flutter.versionName
+        versionName = flutter.versionName()
     }
 
     buildTypes {
