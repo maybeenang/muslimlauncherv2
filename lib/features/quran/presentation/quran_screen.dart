@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:muslim_launcher/core/providers/core_provider.dart';
+import 'package:muslim_launcher/core/utils/toast_utils.dart';
 import 'package:muslim_launcher/features/home/providers.dart';
 import 'package:muslim_launcher/features/quran/providers.dart';
 
@@ -44,13 +44,7 @@ class QuranScreen extends ConsumerWidget {
                     ElevatedButton(
                       onPressed: () {
                         ref.read(userPointsProvider.notifier).addPoints(1);
-                        Fluttertoast.showToast(
-                          msg: '+1 Poin!',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          backgroundColor: Colors.green,
-                          textColor: Colors.white,
-                        );
+                        ToastUtils.showSuccessToast('+1 Poin!');
                         ref.invalidate(randomAyahProvider);
                       },
                       child: const Text('Dapatkan Poin'),

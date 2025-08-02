@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:muslim_launcher/core/providers/theme_provider.dart';
 import 'package:muslim_launcher/core/providers/localization_provider.dart';
 import 'package:muslim_launcher/core/providers/wallpaper_provider.dart';
+import 'package:muslim_launcher/core/utils/toast_utils.dart';
 import 'package:muslim_launcher/core/widgets/wallpaper_background.dart';
 import 'package:muslim_launcher/data/datasource/local/isar_service.dart';
 import 'package:muslim_launcher/features/home/providers.dart';
@@ -239,13 +239,7 @@ class SettingsScreen extends ConsumerWidget {
                     onTap: () async {
                       await ref.read(appWallpaperProvider.notifier).setWallpaper(wallpaper);
                       if (context.mounted) {
-                        Fluttertoast.showToast(
-                          msg: localizations.wallpaperChanged,
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          backgroundColor: Colors.green,
-                          textColor: Colors.white,
-                        );
+                        ToastUtils.showSuccessToast(localizations.wallpaperChanged);
                       }
                     },
                   ),
@@ -264,13 +258,7 @@ class SettingsScreen extends ConsumerWidget {
             onTap: () async {
               await ref.read(appWallpaperProvider.notifier).pickWallpaperFromGallery();
               if (context.mounted) {
-                Fluttertoast.showToast(
-                  msg: localizations.wallpaperChanged,
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  backgroundColor: Colors.green,
-                  textColor: Colors.white,
-                );
+                ToastUtils.showSuccessToast(localizations.wallpaperChanged);
               }
             },
           ),
