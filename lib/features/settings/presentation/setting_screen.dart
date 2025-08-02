@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:muslim_launcher/core/providers/theme_provider.dart';
 import 'package:muslim_launcher/core/providers/localization_provider.dart';
 import 'package:muslim_launcher/core/providers/wallpaper_provider.dart';
@@ -238,8 +239,12 @@ class SettingsScreen extends ConsumerWidget {
                     onTap: () async {
                       await ref.read(appWallpaperProvider.notifier).setWallpaper(wallpaper);
                       if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(localizations.wallpaperChanged)),
+                        Fluttertoast.showToast(
+                          msg: localizations.wallpaperChanged,
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
                         );
                       }
                     },
@@ -259,8 +264,12 @@ class SettingsScreen extends ConsumerWidget {
             onTap: () async {
               await ref.read(appWallpaperProvider.notifier).pickWallpaperFromGallery();
               if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(localizations.wallpaperChanged)),
+                Fluttertoast.showToast(
+                  msg: localizations.wallpaperChanged,
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  backgroundColor: Colors.green,
+                  textColor: Colors.white,
                 );
               }
             },
