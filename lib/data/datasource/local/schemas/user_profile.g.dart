@@ -31,6 +31,11 @@ const UserProfileSchema = CollectionSchema(
       id: 2,
       name: r'themeMode',
       type: IsarType.string,
+    ),
+    r'wallpaperPath': PropertySchema(
+      id: 3,
+      name: r'wallpaperPath',
+      type: IsarType.string,
     )
   },
   estimateSize: _userProfileEstimateSize,
@@ -55,6 +60,12 @@ int _userProfileEstimateSize(
   var bytesCount = offsets.last;
   bytesCount += 3 + object.languageCode.length * 3;
   bytesCount += 3 + object.themeMode.length * 3;
+  {
+    final value = object.wallpaperPath;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -67,6 +78,7 @@ void _userProfileSerialize(
   writer.writeString(offsets[0], object.languageCode);
   writer.writeLong(offsets[1], object.points);
   writer.writeString(offsets[2], object.themeMode);
+  writer.writeString(offsets[3], object.wallpaperPath);
 }
 
 UserProfile _userProfileDeserialize(
@@ -79,6 +91,7 @@ UserProfile _userProfileDeserialize(
     languageCode: reader.readStringOrNull(offsets[0]) ?? 'id',
     points: reader.readLongOrNull(offsets[1]) ?? 10,
     themeMode: reader.readStringOrNull(offsets[2]) ?? 'light',
+    wallpaperPath: reader.readStringOrNull(offsets[3]),
   );
   object.id = id;
   return object;
@@ -97,6 +110,8 @@ P _userProfileDeserializeProp<P>(
       return (reader.readLongOrNull(offset) ?? 10) as P;
     case 2:
       return (reader.readStringOrNull(offset) ?? 'light') as P;
+    case 3:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -298,6 +313,38 @@ extension UserProfileQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      wallpaperPathIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'wallpaperPath',
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      wallpaperPathIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'wallpaperPath',
+      ));
+    });
+  }
+
+  QueryBuilder<UserProfile, UserProfile, QAfterFilterCondition>
+      wallpaperPathEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'wallpaperPath',
+        value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
