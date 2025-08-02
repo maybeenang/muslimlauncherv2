@@ -32,6 +32,14 @@ abstract class AppLocalizations {
   String get loadingApps;
   String get errorLoadingApps;
 
+  // Wallpaper settings
+  String get wallpaperSettings;
+  String get selectWallpaper;
+  String get defaultWallpapers;
+  String get customWallpaper;
+  String get chooseFromGallery;
+  String get wallpaperChanged;
+
   // General
   String get error;
 }
@@ -83,6 +91,24 @@ class AppLocalizationsId extends AppLocalizations {
   String get errorLoadingApps => 'Gagal memuat aplikasi';
 
   @override
+  String get wallpaperSettings => 'Pengaturan Wallpaper';
+
+  @override
+  String get selectWallpaper => 'Pilih Wallpaper';
+
+  @override
+  String get defaultWallpapers => 'Wallpaper Default';
+
+  @override
+  String get customWallpaper => 'Wallpaper Kustom';
+
+  @override
+  String get chooseFromGallery => 'Pilih dari Galeri';
+
+  @override
+  String get wallpaperChanged => 'Wallpaper berhasil diubah';
+
+  @override
   String get error => 'Error';
 }
 
@@ -131,6 +157,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorLoadingApps => 'Failed to load apps';
+
+  @override
+  String get wallpaperSettings => 'Wallpaper Settings';
+
+  @override
+  String get selectWallpaper => 'Select Wallpaper';
+
+  @override
+  String get defaultWallpapers => 'Default Wallpapers';
+
+  @override
+  String get customWallpaper => 'Custom Wallpaper';
+
+  @override
+  String get chooseFromGallery => 'Choose from Gallery';
+
+  @override
+  String get wallpaperChanged => 'Wallpaper changed successfully';
 
   @override
   String get error => 'Error';

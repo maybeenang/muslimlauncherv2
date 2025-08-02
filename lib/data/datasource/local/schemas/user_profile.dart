@@ -12,10 +12,14 @@ class UserProfile {
   
   // Language preference: 'id' for Indonesian, 'en' for English
   String languageCode;
+  
+  // Wallpaper path: asset path or file path for custom wallpaper
+  String? wallpaperPath;
 
   UserProfile({
     this.points = 10,
     this.themeMode = 'light',
     this.languageCode = 'id',
+    this.wallpaperPath,
   }); // Default values
 }
