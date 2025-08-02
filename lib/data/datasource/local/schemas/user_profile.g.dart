@@ -17,10 +17,20 @@ const UserProfileSchema = CollectionSchema(
   name: r'UserProfile',
   id: 4738427352541298891,
   properties: {
-    r'points': PropertySchema(
+    r'languageCode': PropertySchema(
       id: 0,
+      name: r'languageCode',
+      type: IsarType.string,
+    ),
+    r'points': PropertySchema(
+      id: 1,
       name: r'points',
       type: IsarType.long,
+    ),
+    r'themeMode': PropertySchema(
+      id: 2,
+      name: r'themeMode',
+      type: IsarType.string,
     )
   },
   estimateSize: _userProfileEstimateSize,
@@ -43,6 +53,8 @@ int _userProfileEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.languageCode.length * 3;
+  bytesCount += 3 + object.themeMode.length * 3;
   return bytesCount;
 }
 
@@ -52,7 +64,9 @@ void _userProfileSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeLong(offsets[0], object.points);
+  writer.writeString(offsets[0], object.languageCode);
+  writer.writeLong(offsets[1], object.points);
+  writer.writeString(offsets[2], object.themeMode);
 }
 
 UserProfile _userProfileDeserialize(
@@ -62,7 +76,9 @@ UserProfile _userProfileDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = UserProfile(
-    points: reader.readLongOrNull(offsets[0]) ?? 10,
+    languageCode: reader.readStringOrNull(offsets[0]) ?? 'id',
+    points: reader.readLongOrNull(offsets[1]) ?? 10,
+    themeMode: reader.readStringOrNull(offsets[2]) ?? 'light',
   );
   object.id = id;
   return object;
@@ -76,7 +92,11 @@ P _userProfileDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
+      return (reader.readStringOrNull(offset) ?? 'id') as P;
+    case 1:
       return (reader.readLongOrNull(offset) ?? 10) as P;
+    case 2:
+      return (reader.readStringOrNull(offset) ?? 'light') as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
