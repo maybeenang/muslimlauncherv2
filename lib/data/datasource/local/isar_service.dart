@@ -44,6 +44,14 @@ class IsarService {
     });
   }
 
+  Future<void> setWallpaper(String? wallpaperPath) async {
+    final profile = await getUserProfile();
+    profile.wallpaperPath = wallpaperPath;
+    await _isar.writeTxn(() async {
+      await _isar.userProfiles.put(profile);
+    });
+  }
+
   // Operasi AppUsageSettings
   Future<void> toggleAppMonitoring(String packageName) async {
     await _isar.writeTxn(() async {
