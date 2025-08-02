@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:muslim_launcher/core/utils/toast_utils.dart';
 import 'package:muslim_launcher/core/widgets/wallpaper_background.dart';
 import 'package:muslim_launcher/features/home/providers.dart';
 import 'package:muslim_launcher/features/quran/presentation/quran_screen.dart';
@@ -61,13 +61,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       );
     } else {
       if (mounted) {
-        Fluttertoast.showToast(
-          msg: '${localizations.notEnoughPoints} ${localizations.earnPointsMessage}',
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );
+        ToastUtils.showErrorToast('${localizations.notEnoughPoints} ${localizations.earnPointsMessage}');
       }
     }
   }
