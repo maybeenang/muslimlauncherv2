@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:isar/isar.dart';
 import 'package:muslim_launcher/core/providers/core_provider.dart';
+import 'package:muslim_launcher/core/providers/theme_provider.dart';
+import 'package:muslim_launcher/core/providers/localization_provider.dart';
 import 'package:muslim_launcher/core/services/background_service.dart';
 import 'package:muslim_launcher/core/theme/app_theme.dart';
 import 'package:muslim_launcher/data/datasource/local/schemas/app_usage_settings.dart';
 import 'package:muslim_launcher/data/datasource/local/schemas/user_profile.dart';
 import 'package:muslim_launcher/features/home/presentation/home_screen.dart';
+import 'package:muslim_launcher/l10n/app_localizations_delegate.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
@@ -36,16 +40,58 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Muslim Launcher',
-      theme: AppTheme.lightTheme,
-      debugShowCheckedModeBanner: false,
-      home: const HomeScreen(), // Langsung ke HomeScreen
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(appThemeModeProvider);
+    final locale = ref.watch(appLocaleProvider);
+
+    return themeMode.when(
+      data: (theme) => locale.when(
+        data: (loc) => MaterialApp(
+          title: 'Muslim Launcher',
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: theme,
+          locale: loc,
+          localizationsDelegates: const [
+            AppLocalizationsDelegate(),
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('id', ''), // Indonesian
+            Locale('en', ''), // English
+          ],
+          debugShowCheckedModeBanner: false,
+          home: const HomeScreen(), // Langsung ke HomeScreen
+        ),
+        loading: () => const MaterialApp(
+          home: Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          ),
+        ),
+        error: (e, s) => MaterialApp(
+          title: 'Muslim Launcher',
+          theme: AppTheme.lightTheme,
+          debugShowCheckedModeBanner: false,
+          home: const HomeScreen(),
+        ),
+      ),
+      loading: () => const MaterialApp(
+        home: Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        ),
+      ),
+      error: (e, s) => MaterialApp(
+        title: 'Muslim Launcher',
+        theme: AppTheme.lightTheme,
+        debugShowCheckedModeBanner: false,
+        home: const HomeScreen(),
+      ),
     );
   }
 }

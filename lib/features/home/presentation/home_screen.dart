@@ -7,6 +7,7 @@ import 'package:muslim_launcher/features/quran/presentation/quran_screen.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:muslim_launcher/features/settings/presentation/setting_screen.dart';
+import 'package:muslim_launcher/l10n/app_localizations.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -37,14 +38,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void _updateTime() {
     if (mounted) {
       final now = DateTime.now();
+      final locale = Localizations.localeOf(context);
+      final isIndonesian = locale.languageCode == 'id';
+      
       setState(() {
         _timeString = DateFormat('HH:mm').format(now);
-        _dateString = DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(now);
+        _dateString = DateFormat('EEEE, d MMMM yyyy', isIndonesian ? 'id_ID' : 'en_US').format(now);
       });
     }
   }
 
   void _onAppTapped(AppInfo app, bool isMonitored) async {
+    final localizations = AppLocalizations.of(context);
     final notifier = ref.read(userPointsProvider.notifier);
     final canLaunch = await notifier.attemptLaunchApp(app.packageName);
 
@@ -55,9 +60,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text(
-                'Poin tidak cukup! Dapatkan poin dengan membaca Al-Quran.'),
+                '${localizations.notEnoughPoints} ${localizations.earnPointsMessage}'),
           ),
         );
       }
@@ -66,6 +71,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     final points = ref.watch(userPointsProvider);
     final apps = ref.watch(installedAppsProvider);
     final monitoredApps = ref.watch(monitoredAppsProvider);
@@ -98,11 +104,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     Text(_dateString, style: const TextStyle(fontSize: 16)),
                     const SizedBox(height: 24),
                     points.when(
-                      data: (p) => Text('$p Poin',
+                      data: (p) => Text('$p ${localizations.points}',
                           style: const TextStyle(
                               fontSize: 24, fontWeight: FontWeight.bold)),
                       loading: () => const CircularProgressIndicator(),
-                      error: (e, s) => const Text('Error'),
+                      error: (e, s) => Text(localizations.error),
                     )
                   ],
                 ),
@@ -142,7 +148,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
                   error: (e, s) =>
-                      const Center(child: Text('Gagal memuat aplikasi')),
+                      Center(child: Text(localizations.errorLoadingApps)),
                 ),
               ),
 
