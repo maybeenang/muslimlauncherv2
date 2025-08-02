@@ -12,7 +12,7 @@ class IsarService {
   Future<UserProfile> getUserProfile() async {
     var profile = await _isar.userProfiles.get(1);
     if (profile == null) {
-      profile = UserProfile(points: 10);
+      profile = UserProfile(points: 10, themeMode: 'light', languageCode: 'id');
       await _isar.writeTxn(() async {
         await _isar.userProfiles.put(profile!);
       });
@@ -23,6 +23,30 @@ class IsarService {
   Future<void> updateUserPoints(int newPoints) async {
     final profile = await getUserProfile();
     profile.points = newPoints;
+    await _isar.writeTxn(() async {
+      await _isar.userProfiles.put(profile);
+    });
+  }
+
+  Future<void> updateThemeMode(String themeMode) async {
+    final profile = await getUserProfile();
+    profile.themeMode = themeMode;
+    await _isar.writeTxn(() async {
+      await _isar.userProfiles.put(profile);
+    });
+  }
+
+  Future<void> updateLanguageCode(String languageCode) async {
+    final profile = await getUserProfile();
+    profile.languageCode = languageCode;
+    await _isar.writeTxn(() async {
+      await _isar.userProfiles.put(profile);
+    });
+  }
+
+  Future<void> setWallpaper(String? wallpaperPath) async {
+    final profile = await getUserProfile();
+    profile.wallpaperPath = wallpaperPath;
     await _isar.writeTxn(() async {
       await _isar.userProfiles.put(profile);
     });
