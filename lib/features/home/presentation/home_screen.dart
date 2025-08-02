@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:muslim_launcher/core/widgets/wallpaper_background.dart';
 import 'package:muslim_launcher/features/home/providers.dart';
@@ -60,11 +61,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       );
     } else {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-                '${localizations.notEnoughPoints} ${localizations.earnPointsMessage}'),
-          ),
+        Fluttertoast.showToast(
+          msg: '${localizations.notEnoughPoints} ${localizations.earnPointsMessage}',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
         );
       }
     }
